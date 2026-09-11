@@ -1,0 +1,184 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 222 30% 8%;
+    --foreground: 210 40% 96%;
+
+    --card: 222 28% 12%;
+    --card-foreground: 210 40% 96%;
+
+    --border: 220 17% 20%;
+
+    --muted: 220 18% 15%;
+    --muted-foreground: 220 12% 74%;
+
+    --primary: 221 90% 62%;
+    --primary-foreground: 210 40% 98%;
+
+    --success: 145 64% 52%;
+    --success-foreground: 210 40% 98%;
+
+    --destructive: 0 72% 60%;
+    --destructive-foreground: 210 40% 98%;
+
+    --radius: 1rem;
+  }
+
+  * {
+    border-color: hsl(var(--border));
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    @apply min-h-screen antialiased;
+    background: transparent;
+    color: #e2e8f0;
+  }
+
+  ::selection {
+    background: rgba(96, 165, 250, 0.28);
+  }
+
+  button,
+  input {
+    @apply transition-all duration-200;
+  }
+
+  .dashboard-shell {
+    background:
+      radial-gradient(circle at top left, rgba(96, 165, 250, 0.18), transparent 26%),
+      radial-gradient(circle at top right, rgba(168, 85, 247, 0.12), transparent 28%),
+      linear-gradient(180deg, #0b1020 0%, #121a2b 100%);
+    color: #e2e8f0;
+  }
+
+  .dashboard-shell.theme-light {
+    --background: 210 40% 98%;
+    --foreground: 222 47% 11%;
+    --card: 0 0% 100%;
+    --card-foreground: 222 47% 11%;
+    --border: 214 32% 91%;
+    --muted: 210 40% 96%;
+    --muted-foreground: 215 16% 30%;
+    --primary: 221 90% 62%;
+    --primary-foreground: 210 40% 98%;
+    --success: 145 64% 52%;
+    --success-foreground: 210 40% 98%;
+    --destructive: 0 72% 60%;
+    --destructive-foreground: 210 40% 98%;
+
+    background:
+      radial-gradient(circle at top left, rgba(96, 165, 250, 0.18), transparent 24%),
+      linear-gradient(180deg, #ecf3ff 0%, #f8fbff 100%);
+    color: #0f172a;
+  }
+
+  .dashboard-shell.theme-light {
+    color: #0f172a;
+  }
+
+  .dashboard-shell.theme-light .main-panel,
+  .dashboard-shell.theme-light .chart-shell > *,
+  .dashboard-shell.theme-light .metric-card,
+  .dashboard-shell.theme-light .rounded-\[1\.6rem\],
+  .dashboard-shell.theme-light .rounded-2xl,
+  .dashboard-shell.theme-light .rounded-xl,
+  .dashboard-shell.theme-light .rounded-full,
+  .dashboard-shell.theme-light .rounded-lg {
+    color: #0f172a;
+  }
+
+  .dashboard-shell.theme-light .bg-slate-950\/35,
+  .dashboard-shell.theme-light .bg-slate-950\/40,
+  .dashboard-shell.theme-light .bg-slate-900\/30,
+  .dashboard-shell.theme-light .bg-slate-900\/40,
+  .dashboard-shell.theme-light .bg-slate-900\/70,
+  .dashboard-shell.theme-light .bg-slate-900\/80,
+  .dashboard-shell.theme-light .bg-slate-900,
+  .dashboard-shell.theme-light .bg-slate-950,
+  .dashboard-shell.theme-light .bg-white\/5 {
+    background-color: rgba(255, 255, 255, 0.82) !important;
+  }
+
+  .dashboard-shell.theme-light .text-white,
+  .dashboard-shell.theme-light .text-slate-200,
+  .dashboard-shell.theme-light .text-slate-300,
+  .dashboard-shell.theme-light .text-slate-400,
+  .dashboard-shell.theme-light .text-muted-foreground,
+  .dashboard-shell.theme-light .text-slate-500 {
+    color: #0f172a !important;
+  }
+
+  .dashboard-shell.theme-light .border-white\/10,
+  .dashboard-shell.theme-light .border-white\/5,
+  .dashboard-shell.theme-light .border-border,
+  .dashboard-shell.theme-light .border-slate-700,
+  .dashboard-shell.theme-light .border-slate-800 {
+    border-color: rgba(148, 163, 184, 0.35) !important;
+  }
+
+  .dashboard-shell.theme-light .recharts-text,
+  .dashboard-shell.theme-light .recharts-legend-item-text,
+  .dashboard-shell.theme-light .recharts-cartesian-grid-line,
+  .dashboard-shell.theme-light .recharts-tooltip-label,
+  .dashboard-shell.theme-light .recharts-tooltip-wrapper {
+    fill: #0f172a !important;
+    stroke: rgba(15, 23, 42, 0.35) !important;
+    color: #0f172a !important;
+  }
+
+  .dashboard-shell.theme-light .recharts-default-tooltip {
+    background: rgba(255, 255, 255, 0.96) !important;
+    color: #0f172a !important;
+    border: 1px solid rgba(148, 163, 184, 0.3) !important;
+  }
+
+  .dashboard-shell.theme-light .bg-card {
+    background-color: rgba(255, 255, 255, 0.9) !important;
+  }
+
+  .dashboard-shell.theme-light .text-card-foreground {
+    color: #0f172a !important;
+  }
+
+  .chart-shell {
+    position: relative;
+  }
+
+  .chart-shell::before {
+    content: '';
+    position: absolute;
+    inset: -20% -10% -10% -10%;
+    background: radial-gradient(circle at center, rgba(96, 165, 250, 0.18), transparent 58%);
+    pointer-events: none;
+    filter: blur(28px);
+    z-index: 0;
+  }
+
+  .chart-shell > * {
+    position: relative;
+    z-index: 1;
+  }
+
+  .metric-card {
+    position: relative;
+    overflow: hidden;
+  }
+
+  .metric-card::after {
+    content: '';
+    position: absolute;
+    inset: auto -25% -60% auto;
+    width: 140px;
+    height: 140px;
+    background: radial-gradient(circle, rgba(96, 165, 250, 0.18), transparent 65%);
+    filter: blur(18px);
+    pointer-events: none;
+  }
+}
