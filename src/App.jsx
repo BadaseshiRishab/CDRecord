@@ -181,8 +181,8 @@ export default function App() {
   }
 
   return (
-    <div className={`dashboard-shell ${theme === 'dark' ? 'theme-dark' : 'theme-light'} min-h-screen px-3 py-4 sm:px-4 lg:px-5`}>
-      <div className="mx-auto flex max-w-[1600px] gap-4 lg:gap-5">
+    <div className={`dashboard-shell ${theme === 'dark' ? 'theme-dark' : 'theme-light'} min-h-screen w-full overflow-x-hidden px-3 py-4 sm:px-4 lg:px-5`}>
+      <div className="mx-auto flex w-full max-w-[1600px] gap-4 lg:gap-5">
         <aside
           className={`${sidebarOpen ? 'w-72' : 'w-20'} hidden min-h-[calc(100vh-2rem)] shrink-0 rounded-[1.5rem] border border-white/10 bg-slate-950/50 p-3 shadow-[0_20px_60px_rgba(15,23,42,0.4)] backdrop-blur-xl lg:block`}
         >
@@ -238,6 +238,28 @@ export default function App() {
         </aside>
 
         <main className="main-panel min-w-0 flex-1">
+          <div className="mb-4 flex gap-2 overflow-x-auto pb-1 lg:hidden">
+            {navigation.map(({ label, icon: Icon }) => {
+              const isActive = selectedNav === label
+
+              return (
+                <button
+                  key={label}
+                  type="button"
+                  onClick={() => setSelectedNav(label)}
+                  className={`inline-flex shrink-0 items-center gap-2 rounded-full border px-3 py-2 text-[10px] font-semibold uppercase tracking-[0.12em] ${
+                    isActive
+                      ? 'border-primary/40 bg-primary/15 text-primary'
+                      : 'border-white/10 bg-slate-900/30 text-slate-200 hover:border-primary/30 hover:text-primary'
+                  }`}
+                >
+                  <Icon className="h-3.5 w-3.5" />
+                  {label}
+                </button>
+              )
+            })}
+          </div>
+
           <div className="mb-4 flex flex-col gap-3 xl:flex-row xl:items-center xl:justify-between">
             <div className="flex flex-wrap items-center gap-2">
               {ranges.map((option) => (

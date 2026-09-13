@@ -108,8 +108,6 @@ cdr-dashboard/
 │   ├── App.jsx
 │   ├── main.jsx
 │   └── index.css
-├── bonus/
-│   └── solutions.js             # Section 9 bonus coding problems
 ├── index.html
 ├── tailwind.config.js
 ├── vite.config.js
