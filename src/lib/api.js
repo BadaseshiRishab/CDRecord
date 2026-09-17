@@ -2,6 +2,16 @@ const DEFAULT_API_URL = 'https://69b30b45e224ec066bdb55a0.mockapi.io/api/v1/cdr'
 
 const API_URL = import.meta.env.VITE_CDR_API_URL || DEFAULT_API_URL
 
+function parseBoolean(value, fallback = false) {
+  if (typeof value === 'boolean') return value
+  if (typeof value === 'string') {
+    if (value.toLowerCase() === 'true') return true
+    if (value.toLowerCase() === 'false') return false
+  }
+  if (typeof value === 'number') return value !== 0
+  return fallback
+}
+
 /**
  * Normalize a raw CDR record from the API into a consistent shape with the
  * correct JS types (numbers/booleans instead of strings where relevant).
@@ -13,8 +23,8 @@ function normalizeRecord(raw) {
     callerNumber: raw.callerNumber ?? '',
     receiverNumber: raw.receiverNumber ?? '',
     city: raw.city ?? 'Unknown',
-    callDirection: Boolean(raw.callDirection), // true = inbound, false = outbound
-    callStatus: Boolean(raw.callStatus), // true = successful, false = failed
+    callDirection: parseBoolean(raw.callDirection), // true = inbound, false = outbound
+    callStatus: parseBoolean(raw.callStatus), // true = successful, false = failed
     callDuration: Number(raw.callDuration) || 0, // seconds
     callCost: Number(raw.callCost) || 0,
     callStartTime: raw.callStartTime ?? null,
@@ -29,6 +39,7 @@ function expandMockDataset(rawRecords) {
 
   const now = new Date()
   const expanded = []
+  const hasSuccessfulStatus = rawRecords.some((raw) => parseBoolean(raw.callStatus))
 
   rawRecords.forEach((raw, index) => {
     const base = normalizeRecord(raw)
@@ -46,7 +57,11 @@ function expandMockDataset(rawRecords) {
 
       const duration = Math.max(20, Math.round(baseDuration * (0.5 + (variant + 1) / 6)))
       const cost = Number((baseCost * (0.7 + (variant + 1) / 6)).toFixed(2))
-      const status = (index + variant) % 5 === 0 ? false : Boolean(raw.callStatus ?? true)
+      const status = hasSuccessfulStatus
+        ? (index + variant) % 5 === 0
+          ? false
+          : base.callStatus
+        : (index + variant) % 5 !== 0
       const end = new Date(start.getTime() + duration * 1000)
 
       expanded.push({
