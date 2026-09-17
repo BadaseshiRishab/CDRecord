@@ -32,54 +32,6 @@ function normalizeRecord(raw) {
   }
 }
 
-function expandMockDataset(rawRecords) {
-  if (!Array.isArray(rawRecords) || rawRecords.length === 0) {
-    return []
-  }
-
-  const now = new Date()
-  const expanded = []
-  const hasSuccessfulStatus = rawRecords.some((raw) => parseBoolean(raw.callStatus))
-
-  rawRecords.forEach((raw, index) => {
-    const base = normalizeRecord(raw)
-    const baseCost = Number(base.callCost) || 1.25
-    const baseDuration = Number(base.callDuration) || 120
-
-    for (let variant = 0; variant < 5; variant += 1) {
-      const start = new Date(now)
-      const daysBack = (index * 9 + variant * 7 + (index % 3) * 4) % 120
-      const hour = (index * 3 + variant * 5 + 2) % 24
-      const minute = (index * 11 + variant * 13) % 60
-
-      start.setDate(start.getDate() - daysBack)
-      start.setHours(hour, minute, 0, 0)
-
-      const duration = Math.max(20, Math.round(baseDuration * (0.5 + (variant + 1) / 6)))
-      const cost = Number((baseCost * (0.7 + (variant + 1) / 6)).toFixed(2))
-      const status = hasSuccessfulStatus
-        ? (index + variant) % 5 === 0
-          ? false
-          : base.callStatus
-        : (index + variant) % 5 !== 0
-      const end = new Date(start.getTime() + duration * 1000)
-
-      expanded.push({
-        ...base,
-        id: `${base.id}-${variant}`,
-        callDirection: variant % 2 === 0,
-        callStatus: status,
-        callDuration: duration,
-        callCost: cost,
-        callStartTime: start.toISOString(),
-        callEndTime: end.toISOString(),
-      })
-    }
-  })
-
-  return expanded
-}
-
 /**
  * Fetch and normalize the full list of call data records from the CDR API.
  */
@@ -96,7 +48,7 @@ export async function fetchCallRecords() {
     throw new Error('Unexpected API response shape: expected an array of call records')
   }
 
-  return expandMockDataset(data)
+  return data.map(normalizeRecord)
 }
 
 export { API_URL }
